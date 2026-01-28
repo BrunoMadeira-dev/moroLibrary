@@ -8,5 +8,8 @@
 import Foundation
 
 struct BookResponse: Codable {
+    let count: Int
+    let next: String?
+    let previous: String?
     let results: [Book]
 }

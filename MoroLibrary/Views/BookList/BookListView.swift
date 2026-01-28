@@ -16,14 +16,30 @@ struct BookListView: View {
                 NavigationLink(value: book) {
                     BookRowView(book: book)
                 }
+                .onAppear {
+                    if book == viewModel.books.last {
+                        Task {
+                            await viewModel.loadNextPage()
+                        }
+                    }
+                }
+                
+                if viewModel.isLoading {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                }
             }
             .navigationTitle("Books")
-            .task {
-                await viewModel.loadBooks()
-            }
 //            .navigationDestination(for: Book.self) { book in
 //                BookDetailsListView(book: book)
 //            }
+            .task {
+                await viewModel.loadInitialBooks()
+            }
+
         }
     }
 }
