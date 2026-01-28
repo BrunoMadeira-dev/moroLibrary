@@ -9,7 +9,18 @@ import SwiftUI
 
 struct BooksRootView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TabView {
+            BookListView()
+                .tabItem {
+                    Label("Books", systemImage: "book")
+                }
+            
+            FavoritesView()
+                .tabItem {
+                    Label("Favorites", systemImage: "star")
+                }
+        }
+        
     }
 }
 
