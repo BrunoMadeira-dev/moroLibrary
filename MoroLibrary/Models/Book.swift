@@ -39,4 +39,8 @@ struct Formats: Codable, Hashable {
     enum CodingKeys: String, CodingKey {
         case imageJPEG = "image/jpeg"
     }
+    
+    init(imageJPEG: String) {
+        self.imageJPEG = imageJPEG
+    }
 }
