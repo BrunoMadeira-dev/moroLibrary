@@ -8,8 +8,28 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    
+    @EnvironmentObject private var favoritesVM: FavoritesViewModel
+    @EnvironmentObject private var booksVM: BookListViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List {
+                ForEach(
+                    booksVM.books
+                        .filter {
+                            favoritesVM.isFavorite(bookID: $0.id)
+                        }) { book in
+                            NavigationLink(value: book) {
+                            FavoritesRowView(book:book)
+                        }
+                    }
+            }
+            .navigationTitle("Favorites")
+            .navigationDestination(for: Book.self) { book in
+                BookDetailsView(book: book)
+            }
+        }
     }
 }
 

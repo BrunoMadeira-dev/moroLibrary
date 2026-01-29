@@ -9,7 +9,8 @@ import SwiftUI
 
 struct BookListView: View {
     
-    @StateObject private var viewModel = BookListViewModel()
+    @ObservedObject var viewModel = BookListViewModel()
+    
     var body: some View {
         NavigationStack {
             List(viewModel.books) { book in
@@ -33,9 +34,9 @@ struct BookListView: View {
                 }
             }
             .navigationTitle("Books")
-//            .navigationDestination(for: Book.self) { book in
-//                BookDetailsListView(book: book)
-//            }
+            .navigationDestination(for: Book.self) { book in
+                BookDetailsView(book: book)
+            }
             .task {
                 await viewModel.loadInitialBooks()
             }
