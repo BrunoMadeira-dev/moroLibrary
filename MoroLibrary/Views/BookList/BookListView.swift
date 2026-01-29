@@ -21,6 +21,7 @@ struct BookListView: View {
                     if book == viewModel.books.last {
                         Task {
                             await viewModel.loadNextPage()
+                            
                         }
                     }
                 }
@@ -41,6 +42,13 @@ struct BookListView: View {
                 await viewModel.loadInitialBooks()
             }
 
+        }
+        .alert(item: $viewModel.uiError) { error in
+            Alert(
+                title: Text(error.title),
+                message: Text(error.message),
+                dismissButton: .default(Text("Ok"))
+            )
         }
     }
 }

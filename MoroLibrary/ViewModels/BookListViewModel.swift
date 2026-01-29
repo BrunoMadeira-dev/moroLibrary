@@ -14,6 +14,7 @@ final class BookListViewModel: ObservableObject {
     @Published var books: [Book] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var uiError: UIError?
     
     private var nextPageURL: String? = Endpoints.books
     private var isFetchingNextPage = false
@@ -39,7 +40,8 @@ final class BookListViewModel: ObservableObject {
             )
             books = response.results
         } catch {
-            errorMessage = error.localizedDescription
+            uiError = UIError(title: "Error", message: "Error loading books")
+            //errorMessage = error.localizedDescription
         }
     }
     
