@@ -31,16 +31,18 @@ final class BookListViewModel: ObservableObject {
         await loadNextPage()
     }
     
+    private let paginationLock = PaginationLock()
+    
     func loadNextPage() async {
-        guard let url = nextPageURL,
-              !isFetchingNextPage else { return }
+        guard let url = nextPageURL, await paginationLock.tryStart() else {
+            return
+        }
         
-        isFetchingNextPage = true
         isLoading = true
         
         defer {
-            isFetchingNextPage = false
             isLoading = false
+            Task { await paginationLock.finish() }
         }
         
         do {
@@ -51,4 +53,20 @@ final class BookListViewModel: ObservableObject {
             uiError = UIError(title: "Error", message: "Error loading more books")
         }
     }
+    
+    actor PaginationLock {
+        private var isFetching = false
+
+        func tryStart() -> Bool {
+            if isFetching { return false }
+            isFetching = true
+            return true
+        }
+
+        func finish() {
+            isFetching = false
+        }
+    }
+
+    
 }

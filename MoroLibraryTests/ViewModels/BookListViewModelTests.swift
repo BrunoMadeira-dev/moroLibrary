@@ -58,4 +58,19 @@ final class BookListViewModelTests: XCTestCase {
         XCTAssertEqual(vm.uiError?.title, "Error")
         XCTAssertTrue(vm.books.isEmpty)
     }
+    
+    func testLoadNextPageWhileLoadingDoesNothing() async {
+        let mockService = MockBookServices()
+        mockService.result = .success(.mockPage1)
+
+        let vm = BookListViewModel(service: mockService)
+
+        await vm.loadInitialBooks()
+        let currentCount = vm.books.count
+
+        await vm.loadNextPage()
+        await vm.loadNextPage()
+
+        XCTAssertEqual(vm.books.count, 40)
+    }
 }
