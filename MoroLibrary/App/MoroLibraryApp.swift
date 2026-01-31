@@ -11,11 +11,13 @@ import SwiftUI
 struct MoroLibraryApp: App {
     
     @StateObject private var favoritesViewModel = FavoritesViewModel()
+    @StateObject private var bookListViewModel = BookListViewModel()
     
     var body: some Scene {
         WindowGroup {
             BooksRootView()
                 .environmentObject(favoritesViewModel)
+                .environmentObject(bookListViewModel)
         }
     }
 }

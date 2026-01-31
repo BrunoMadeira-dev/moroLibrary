@@ -20,9 +20,17 @@ final class BookListViewModel: ObservableObject {
     private var isFetchingNextPage = false
     private let service: BookServiceProtocol
     
+    private var hasLoadedInitial = false
 
     init(service: BookServiceProtocol? = nil) {
         self.service = service ?? BooksService()
+        Task { await loadInitialBooksIfNeeded() }
+    }
+    
+    func loadInitialBooksIfNeeded() async {
+        guard !hasLoadedInitial else { return }
+        hasLoadedInitial = true
+        await loadInitialBooks()
     }
     
     func loadInitialBooks() async {

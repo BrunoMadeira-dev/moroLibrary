@@ -40,7 +40,7 @@ struct BookListView: View {
                 BookDetailsView(book: book)
             }
             .task {
-                await viewModel.loadInitialBooks()
+                await viewModel.loadInitialBooksIfNeeded()
             }
 
         }

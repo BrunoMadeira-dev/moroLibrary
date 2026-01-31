@@ -12,6 +12,10 @@ struct FavoritesView: View {
     @EnvironmentObject private var favoritesVM: FavoritesViewModel
     @EnvironmentObject private var booksVM: BookListViewModel
     
+    var favoriteBooks: [Book] {
+        booksVM.books.filter { favoritesVM.favoritebooksIDs.contains($0.id) }
+    }
+    
     var body: some View {
         NavigationStack {
             if favoritesVM.favoritebooksIDs.isEmpty {
@@ -45,16 +49,12 @@ struct FavoritesView: View {
     }
     
     private var favoritesList: some View {
-        List {
-            ForEach(booksVM.books.filter {
-                favoritesVM.isFavorite(bookID: $0.id)
-            }) { book in
+            List(favoriteBooks) { book in
                 NavigationLink(value: book) {
                     FavoritesRowView(book: book)
                 }
             }
         }
-    }
 }
 
 #Preview {

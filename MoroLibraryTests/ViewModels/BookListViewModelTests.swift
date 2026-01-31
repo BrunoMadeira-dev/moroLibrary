@@ -66,7 +66,6 @@ final class BookListViewModelTests: XCTestCase {
         let vm = BookListViewModel(service: mockService)
 
         await vm.loadInitialBooks()
-        let currentCount = vm.books.count
 
         await vm.loadNextPage()
         await vm.loadNextPage()
